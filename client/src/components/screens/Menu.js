@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion/dist/es/index";
 
+import AddMenuItems from "../popups/AddMenuItems";
+
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
+
+  const [showAddMenu,setShowAddMenu] = useState(false);
 
   useEffect(() => {
     const getMenuItemData = async () => {
@@ -16,7 +20,13 @@ const Menu = () => {
     getMenuItemData();
   }, []);
 
-  console.log(menuItems);
+  const handleAddItem = (e) =>{
+    e.preventDefault()
+    setShowAddMenu(!showAddMenu);
+  }
+
+  console.log(showAddMenu)
+  //console.log(menuItems);
 
   return (
     <motion.div
@@ -26,10 +36,11 @@ const Menu = () => {
       transition={{ delay: 0.2 }}
       className="home-main"
     >
+      
       <div className="home-container">
         <div className="home-header">
           <h2>Menu Items</h2>
-          <button>Add Items</button>
+          <button onClick={handleAddItem}>Add Items</button>
         </div>
 
         {/*Menu items are displayed here....*/}
@@ -57,6 +68,7 @@ const Menu = () => {
           )}
         </div>
       </div>
+      <AddMenuItems show={showAddMenu} setShow={setShowAddMenu}/>
     </motion.div>
   );
 };

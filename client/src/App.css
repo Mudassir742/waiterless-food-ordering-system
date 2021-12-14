@@ -71,6 +71,7 @@
 /*...............Home.............................*/
 
 .home-main {
+  position: relative;
   width: 100%;
   display: flex;
   align-items: center;
@@ -177,3 +178,120 @@
   display:inline-block;
   transition: all .2s;
 }
+
+/*..........................Popups Here....................................*/
+
+
+
+
+.addmenuitem-container{
+  background-color: #181818;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 5rem 2rem;
+  width: 50%;
+  position: absolute;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  display: flex;
+}
+
+.image{
+  width: 100px;
+  height:100px;
+  border-radius:50%;
+  border: 5px solid #F28C28;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: aliceblue;
+  margin-right: 3rem;
+}
+
+.image i{
+  
+  font-size: 6rem;
+  font-style: normal;
+}
+.select-sort{
+  margin-left: 2rem;
+}
+
+.select-category{
+  font-size: 1.2rem;
+  margin-bottom: 3rem;
+  outline-color: #F28C28;
+}
+
+.input{
+  margin-bottom: 2rem;
+}
+
+.name-input{
+  display: block;
+  width: 300px;
+  border-top: transparent;
+  border-right: transparent;
+  border-left: transparent;
+  border-bottom: 2px solid gray;
+  outline: none;
+  padding: .2rem .7rem;
+  background-color: transparent;
+  font-size: 1.1rem;
+  color:white;
+  margin-bottom: 1rem;
+}
+
+.error-message{
+  display: block;
+  color: white;
+  font-style: italic;
+  margin-left: 2rem;
+}
+
+.add-item-button{
+  width: 300px;
+  padding: .5rem 0;
+  border: transparent;
+  outline: none;
+  border-radius: 5px;
+  font-weight: bold;
+  background-color: #F28C28;
+  color: white;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.add-item-button:hover{
+  background-color: #be6205;
+}
+
+.cancel-button{
+  z-index: 1000;
+  position: absolute;
+  color: white;
+  background-color:#F28C28;
+  width: 50px;
+  height: 50px;
+  top: 0;
+  right: 0;
+  border-top-right-radius:8px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.cancel-button:hover{
+  background-color: #be6205;
+}
+
+.hideAddMenu{
+  display: none;
+}
+
