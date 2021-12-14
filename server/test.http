@@ -1,0 +1,12 @@
+post http://localhost:5000/data/addcategory
+
+
+######
+get http://localhost:5000/data/api/categories
+
+
+####
+get http://localhost:5000/data/api/customers
+
+#####
+get https://swapi.dev/api/films/1/
