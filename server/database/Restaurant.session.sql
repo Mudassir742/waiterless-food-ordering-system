@@ -104,7 +104,7 @@ values(1,1,null,"star burger",300),(2,2,null,"Lazania",800),(3,3,null,"Coke",80)
 
 
 
-select mItemID as itemID,itemName,catName as itemCategory,unit_price as itemPrice from MenuItems join Category on mItemID=catID;
+select mItemID as itemID,itemName,catName as itemCategory,unit_price as itemPrice from MenuItems join Category on itemCat=catID;
 
 
 

@@ -20,7 +20,6 @@ const AddMenuItems = (props) => {
   const addNewMenuItem = async (e) => {
     e.preventDefault();
     if (newMenuItem.category && newMenuItem.name && newMenuItem.price) {
-      
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -32,6 +31,9 @@ const AddMenuItems = (props) => {
       const data = await response.json();
 
       console.log(data.data);
+
+      //closing the popup after items are added....
+      props.setShow(!props.show);
     } else {
       console.log("Input is Empty");
     }
@@ -48,8 +50,8 @@ const AddMenuItems = (props) => {
     setNewMenuItem({ ...newMenuItem, [name]: value });
   };
 
-  console.log(inputItemCategories);
-  console.log(newMenuItem);
+  // console.log(inputItemCategories);
+  // console.log(newMenuItem);
 
   return (
     <div className={props.show ? "addmenuitem-container" : "hideAddMenu"}>
@@ -84,6 +86,7 @@ const AddMenuItems = (props) => {
               className="name-input"
               placeholder="Name"
               name="name"
+              defaultValue={props.name ? props.name : ""}
               onChange={handleInputChange}
             />
             <span className="error-message">name must be a valid value</span>
@@ -97,6 +100,7 @@ const AddMenuItems = (props) => {
               min="50"
               max="3000"
               name="price"
+              defaultValue={props.price ? parseInt(props.price) : ""}
               onChange={handleInputChange}
             />
             <span className="error-message">price must be a valid value</span>

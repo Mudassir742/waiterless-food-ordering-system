@@ -33,8 +33,8 @@ router.get("/api/menuitems", (req, res) => {
       return res.status(404).send({ message: err.message });
     }
 
-    const addCategory = `select mItemID as itemID,itemName,catName as itemCategory,unit_price as itemPrice
-                          from MenuItems join Category on mItemID=catID;`;
+    const addCategory = `select mItemID as itemID,itemCat,itemName,catName as itemCategory,unit_price as itemPrice
+                          from MenuItems join Category on itemCat=catID;`;
     connection.query(addCategory, (err, rows) => {
       connection.release();
       if (err) {

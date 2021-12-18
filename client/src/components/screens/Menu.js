@@ -5,7 +5,7 @@ import AddMenuItems from "../popups/AddMenuItems";
 
 const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
-
+  const [items, setItems] = useState({});
   const [showAddMenu, setShowAddMenu] = useState(false);
 
   const getMenuItemData = async () => {
@@ -22,6 +22,12 @@ const Menu = () => {
 
   const handleAddItem = (e) => {
     e.preventDefault();
+    setShowAddMenu(!showAddMenu);
+  };
+
+  const eidtMenuItems = (e, items) => {
+    e.preventDefault();
+    setItems(items);
     setShowAddMenu(!showAddMenu);
   };
 
@@ -66,7 +72,9 @@ const Menu = () => {
                     </div>
                   </div>
                   <div className="item-buttons">
-                    <button>Edit</button>
+                    <button onClick={(e) => eidtMenuItems(e, items)}>
+                      Edit
+                    </button>
                     <button onClick={(e) => deleteItems(e, items.itemID)}>
                       Delete
                     </button>
@@ -79,7 +87,13 @@ const Menu = () => {
           )}
         </div>
       </div>
-      <AddMenuItems show={showAddMenu} setShow={setShowAddMenu} />
+      <AddMenuItems
+        show={showAddMenu}
+        setShow={setShowAddMenu}
+        name={items.itemName}
+        price={items.itemPrice}
+        category={items.itemCat}
+      />
     </motion.div>
   );
 };
