@@ -1,12 +1,29 @@
+###############
+//add new category of menu items...
 post http://localhost:5000/data/addcategory
 
 
-######
-get http://localhost:5000/data/api/categories
+###############
+#get all of the item's categories available in menu
+get http://localhost:5000/data/api/menuitems
 
 
-####
+###############
+#get all customers detail......
 get http://localhost:5000/data/api/customers
 
-#####
-get https://swapi.dev/api/films/1/
+
+##############
+//addMenuItems....
+post http://localhost:5000/data/addmenuitems
+content-type: application/json
+
+{
+    "itemCategoryID": 1,
+    "itemName":"Patty Zinger",
+    "itemPrice":"200"
+}
+
+###
+//delete items from Menu......
+get http://localhost:5000/data/removeitem/1

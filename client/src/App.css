@@ -188,10 +188,11 @@
   background-color: #181818;
   border: 2px solid black;
   border-radius: 10px;
+  margin-top: 2rem;
   padding: 5rem 2rem;
   width: 50%;
   position: absolute;
-  top:50%;
+  top:60%;
   left: 50%;
   transform: translate(-50%,-50%);
   display: flex;
