@@ -7,6 +7,7 @@ const Menu = () => {
   const [menuItems, setMenuItems] = useState([]);
   const [items, setItems] = useState({});
   const [showAddMenu, setShowAddMenu] = useState(false);
+  const [edit,setEdit] = useState(false)
 
   const getMenuItemData = async () => {
     const headers = { "Content-Type": "application/json" };
@@ -18,15 +19,17 @@ const Menu = () => {
 
   useEffect(() => {
     getMenuItemData();
-  }, []);
+  }, [showAddMenu]);
 
   const handleAddItem = (e) => {
     e.preventDefault();
+    setEdit(false);
     setShowAddMenu(!showAddMenu);
   };
 
   const eidtMenuItems = (e, items) => {
     e.preventDefault();
+    setEdit(true);
     setItems(items);
     setShowAddMenu(!showAddMenu);
   };
@@ -40,7 +43,7 @@ const Menu = () => {
     getMenuItemData();
   };
 
-  console.log(menuItems);
+  //console.log(menuItems);
 
   return (
     <motion.div
@@ -93,6 +96,8 @@ const Menu = () => {
         name={items.itemName}
         price={items.itemPrice}
         category={items.itemCat}
+        itemID={items.itemID}
+        isEdit={edit}
       />
     </motion.div>
   );

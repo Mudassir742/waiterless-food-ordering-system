@@ -4,7 +4,7 @@ const pool = require("../database/connection");
 
 const router = express.Router();
 
-//get all of the item categories from database....
+//get all of the item categories....
 router.get("/api/categories", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
@@ -26,7 +26,7 @@ router.get("/api/categories", (req, res) => {
   });
 });
 
-//get all items from MenuItmes......
+//get all items from Menu......
 router.get("/api/menuitems", (req, res) => {
   pool.getConnection((err, connection) => {
     if (err) {
@@ -45,7 +45,7 @@ router.get("/api/menuitems", (req, res) => {
   });
 });
 
-//insert a new category in database....
+//insert a new category of items....
 router.post("/addcategory", (req, res) => {
   const { name } = req.body;
 
@@ -123,10 +123,9 @@ router.post("/addmenuitems", (req, res) => {
 
 //delete items from the menu.....
 router.get("/removeitem/:id", (req, res) => {
-  
   const itemID = req.params.id;
 
-  console.log(itemID)
+  console.log(itemID);
 
   pool.getConnection((err, connection) => {
     if (err) {
@@ -141,11 +140,48 @@ router.get("/removeitem/:id", (req, res) => {
       ]);
 
       connection.query(query, (err, rows) => {
-        connection.release()
+        connection.release();
         if (err) {
           res.send({ message: err.message });
         } else {
           res.status(201).send({ data: "Item deleted Successfull" });
+        }
+      });
+    }
+  });
+});
+
+//edit the Item in Menu.....
+router.post("/edititem", (req, res) => {
+  console.log(req.body);
+  const itemID = parseInt(req.body.itemID);
+  const itemCategoryID = parseInt(req.body.category);
+  const itemName = req.body.name;
+  const itemPrice = parseInt(req.body.price);
+
+  pool.getConnection((err, connection) => {
+    if (err) {
+      return res.send({ message: err.message });
+    } else {
+      const updateMenuItem =
+        "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+      const query = mysql.format(updateMenuItem, [
+        "MenuItems",
+        "itemCat",
+        itemCategoryID,
+        "itemName",
+        itemName,
+        "unit_price",
+        itemPrice,
+        "mItemID",
+        itemID,
+      ]);
+      connection.query(query, (err, rows) => {
+        connection.release();
+        if (err) {
+          return res.send({ message: err.message });
+        } else {
+          return res.status(200).send({ data: rows });
         }
       });
     }

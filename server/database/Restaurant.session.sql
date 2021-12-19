@@ -97,6 +97,9 @@ create table MenuItems(
     FOREIGN KEY (itemCat) REFERENCES Category(catID)
 );
 
+
+select * from MenuItems;
+
 drop table MenuItems;
 
 insert into MenuItems(mItemID,itemCat,itemPhoto,itemName,unit_price)

@@ -27,3 +27,15 @@ content-type: application/json
 ###
 //delete items from Menu......
 get http://localhost:5000/data/removeitem/1
+
+##############
+//update Menu Item
+post http://localhost:5000/data/edititem
+content-type: application/json
+
+{
+    "itemID":"8",
+    "itemCategoryID": "1",
+    "itemName":"Star Burger",
+    "itemPrice":"250"
+}

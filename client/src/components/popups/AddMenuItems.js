@@ -19,21 +19,23 @@ const AddMenuItems = (props) => {
 
   const addNewMenuItem = async (e) => {
     e.preventDefault();
-    if (newMenuItem.category && newMenuItem.name && newMenuItem.price) {
+    if (newMenuItem.category!=="" && newMenuItem.name!=="" && newMenuItem.price!=="") {
+      
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newMenuItem),
+        body: JSON.stringify(props.isEdit ? {...newMenuItem,itemID:props.itemID} : newMenuItem),
       };
+      
+      const requestURL = props.isEdit ? "/data/edititem" : "/data/addmenuitems";
 
-      const response = await fetch("/data/addmenuitems", requestOptions);
+      const response = await fetch(requestURL, requestOptions);
 
       const data = await response.json();
 
       console.log(data.data);
-
-      //closing the popup after items are added....
       props.setShow(!props.show);
+      
     } else {
       console.log("Input is Empty");
     }
@@ -50,7 +52,7 @@ const AddMenuItems = (props) => {
     setNewMenuItem({ ...newMenuItem, [name]: value });
   };
 
-  // console.log(inputItemCategories);
+  //console.log(inputItemCategories);
   // console.log(newMenuItem);
 
   return (
@@ -68,7 +70,6 @@ const AddMenuItems = (props) => {
             name="category"
             onChange={handleInputChange}
           >
-            <option value={0}>None</option>
             {/*categories already in database*/}
             {inputItemCategories &&
               inputItemCategories.map((categories) => {
@@ -89,7 +90,7 @@ const AddMenuItems = (props) => {
               defaultValue={props.name ? props.name : ""}
               onChange={handleInputChange}
             />
-            <span className="error-message">name must be a valid value</span>
+            <span className={newMenuItem.name ? "showerrormessage" : "error-message"}>name must be a valid value</span>
           </div>
 
           <div className="input">
@@ -103,7 +104,7 @@ const AddMenuItems = (props) => {
               defaultValue={props.price ? parseInt(props.price) : ""}
               onChange={handleInputChange}
             />
-            <span className="error-message">price must be a valid value</span>
+            <span className={newMenuItem.price ? "showerrormessage" : "error-message"}>price must be a valid value</span>
           </div>
 
           <button className="add-item-button" onClick={addNewMenuItem}>
