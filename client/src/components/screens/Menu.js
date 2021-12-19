@@ -28,16 +28,21 @@ const Menu = () => {
   };
 
   const eidtMenuItems = (e, items) => {
-    e.preventDefault();
+    //e.preventDefault();
     setEdit(true);
     setItems(items);
     setShowAddMenu(!showAddMenu);
   };
 
-  const deleteItems = async (e, itemID) => {
+  const deleteItems = async (e, itemID,itemPhoto) => {
     e.preventDefault();
     console.log(itemID);
-    const response = await fetch(`/data/removeitem/${itemID}`);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({itemPhoto:itemPhoto}),
+    };
+    const response = await fetch(`/data/removeitem/${itemID}`,requestOptions);
 
     console.log(response.data);
     getMenuItemData();
@@ -67,7 +72,9 @@ const Menu = () => {
               return (
                 <div className="item-container" key={index}>
                   <div className="item-detail">
-                    <div className="item-pic"></div>
+                    <div className="item-pic">
+                      {items.itemPhoto && <img src={items.itemPhoto} alt="Item-Photo" className="menu-item-image"/>}
+                    </div>
                     <div className="item-content">
                       <h4>Name : {items.itemName}</h4>
                       <h4>Price : Rs.{items.itemPrice} </h4>
@@ -78,7 +85,7 @@ const Menu = () => {
                     <button onClick={(e) => eidtMenuItems(e, items)}>
                       Edit
                     </button>
-                    <button onClick={(e) => deleteItems(e, items.itemID)}>
+                    <button onClick={(e) => deleteItems(e, items.itemID,items.itemPhoto)}>
                       Delete
                     </button>
                   </div>
@@ -93,10 +100,10 @@ const Menu = () => {
       <AddMenuItems
         show={showAddMenu}
         setShow={setShowAddMenu}
-        name={items.itemName}
-        price={items.itemPrice}
-        category={items.itemCat}
-        itemID={items.itemID}
+        name={edit ? items.itemName : ""}
+        price={edit ? items.itemPrice : ""}
+        category={edit ? items.itemCat : ""}
+        itemID={edit ? items.itemID : ""}
         isEdit={edit}
       />
     </motion.div>

@@ -1,6 +1,13 @@
 const express = require("express");
 const mysql = require("mysql");
 const pool = require("../database/connection");
+const multer = require("multer");
+const path = require("path");
+const crypto = require("crypto");
+const fs = require("fs");
+const { promisify } = require("util");
+
+const unlinkAsync = promisify(fs.unlink);
 
 const router = express.Router();
 
@@ -33,7 +40,7 @@ router.get("/api/menuitems", (req, res) => {
       return res.status(404).send({ message: err.message });
     }
 
-    const addCategory = `select mItemID as itemID,itemCat,itemName,catName as itemCategory,unit_price as itemPrice
+    const addCategory = `select mItemID as itemID,itemCat,itemName,itemPhoto,catName as itemCategory,unit_price as itemPrice
                           from MenuItems join Category on itemCat=catID;`;
     connection.query(addCategory, (err, rows) => {
       connection.release();
@@ -47,15 +54,19 @@ router.get("/api/menuitems", (req, res) => {
 
 //insert a new category of items....
 router.post("/addcategory", (req, res) => {
-  const { name } = req.body;
-
+  const { itemCategory } = req.body;
+  console.log(itemCategory);
   pool.getConnection((err, connection) => {
     if (err) {
       res.send(err.message);
     } else {
       console.log("connected as id " + connection.threadId);
       const addCategory = "INSERT INTO ?? (??) VALUES (?)";
-      const query = mysql.format(addCategory, ["Category", "catName", name]);
+      const query = mysql.format(addCategory, [
+        "Category",
+        "catName",
+        itemCategory,
+      ]);
 
       connection.query(query, (err, rows) => {
         if (err) {
@@ -63,15 +74,7 @@ router.post("/addcategory", (req, res) => {
         } else {
           console.log("The data from users table are: \n", rows);
 
-          connection.query(`select * from Category`, (err, data) => {
-            connection.release(); // return the connection to pool
-            if (err) {
-              res.send(err.message);
-            } else {
-              console.log("The data from users table are: \n", data);
-              res.send(data);
-            }
-          });
+          res.status(201).send({ message: "Categroy Added" });
         }
       });
     }
@@ -84,17 +87,21 @@ router.post("/addmenuitems", (req, res) => {
   const itemName = req.body.name;
   const itemPrice = parseInt(req.body.price);
 
+  const mItemID = crypto.randomBytes(16).toString("hex");
+
   pool.getConnection((err, connection) => {
     if (err) {
       res.send({ message: err.message });
     } else {
       console.log("connected as id " + connection.threadId);
-      const addMenuItem = "INSERT INTO ?? (??,??,??) VALUES (?,?,?)";
+      const addMenuItem = "INSERT INTO ?? (??,??,??,??) VALUES (?,?,?,?)";
       const query = mysql.format(addMenuItem, [
         "MenuItems",
+        "mItemID",
         "itemCat",
         "itemName",
         "unit_price",
+        mItemID,
         itemCategoryID,
         itemName,
         itemPrice,
@@ -105,16 +112,7 @@ router.post("/addmenuitems", (req, res) => {
           res.send({ message: err.message });
         } else {
           console.log("The data from MenuItems table are: \n", rows);
-
-          connection.query(`select * from MenuItems`, (err, data) => {
-            connection.release(); // return the connection to pool
-            if (err) {
-              res.send(err.message);
-            } else {
-              console.log("The data from users table are: \n", data);
-              res.status(201).send({ data: data });
-            }
-          });
+          res.status(201).send({ itemID: mItemID });
         }
       });
     }
@@ -122,11 +120,12 @@ router.post("/addmenuitems", (req, res) => {
 });
 
 //delete items from the menu.....
-router.get("/removeitem/:id", (req, res) => {
+router.post("/removeitem/:id", (req, res) => {
   const itemID = req.params.id;
+  const { itemPhoto } = req.body;
 
   console.log(itemID);
-
+  console.log(itemPhoto);
   pool.getConnection((err, connection) => {
     if (err) {
       res.send({ message: err.message });
@@ -139,12 +138,23 @@ router.get("/removeitem/:id", (req, res) => {
         itemID,
       ]);
 
-      connection.query(query, (err, rows) => {
+      connection.query(query, async(err, rows) => {
         connection.release();
         if (err) {
           res.send({ message: err.message });
         } else {
-          res.status(201).send({ data: "Item deleted Successfull" });
+          try {
+            await unlinkAsync("./public"+itemPhoto)
+            console.log("Image Deleted");
+            return res
+              .status(200)
+              .send({ message: "Successfully! Image has been Deleted" });
+          } catch (err) {
+            // handle the error
+            return res.status(400).send({ message: err.message });
+          }
+
+          //res.status(201).send({ data: "Item deleted Successfull" });
         }
       });
     }
@@ -186,6 +196,56 @@ router.post("/edititem", (req, res) => {
       });
     }
   });
+});
+
+//image upload..................
+const storage = multer.diskStorage({
+  destination: "./public/uploads/",
+  filename: function (req, file, cb) {
+    cb(null, "IMAGE-" + Date.now() + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1000000 },
+});
+
+router.post("/upload/itemimage/:itemID", upload.single("image"), (req, res) => {
+  console.log("inside upload");
+  console.log(req.params.itemID);
+  const mItemID = req.params.itemID;
+  if (!req.file) {
+    console.log("No file upload");
+    res.send({ message: "err" });
+  } else {
+    pool.getConnection((err, connection) => {
+      if (err) {
+        return res.send({ message: err.message });
+      }
+      console.log(req.file.filename);
+
+      const imgsrc = "/uploads/" + req.file.filename;
+      console.log(imgsrc);
+
+      const updateMenuItem = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+      const query = mysql.format(updateMenuItem, [
+        "MenuItems",
+        "itemPhoto",
+        imgsrc,
+        "mItemID",
+        mItemID,
+      ]);
+      connection.query(query, (err, rows) => {
+        connection.release();
+        if (err) {
+          return res.send({ message: err.message });
+        } else {
+          return res.status(200).send({ data: "Image Uploaded" });
+        }
+      });
+    });
+  }
 });
 
 module.exports = router;

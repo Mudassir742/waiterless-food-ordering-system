@@ -19,9 +19,9 @@ post http://localhost:5000/data/addmenuitems
 content-type: application/json
 
 {
-    "itemCategoryID": 1,
-    "itemName":"Patty Zinger",
-    "itemPrice":"200"
+    "category": 1,
+    "name":"Chapli Zinger",
+    "price":"300"
 }
 
 ###

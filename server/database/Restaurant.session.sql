@@ -88,7 +88,7 @@ select * from FoodItem;
 
 
 create table MenuItems(
-    mItemID int not null AUTO_INCREMENT,
+    mItemID VARCHAR(50)not null,
     itemCat int not null,
     itemPhoto VARCHAR(100),
     itemName varchar(30) not null,

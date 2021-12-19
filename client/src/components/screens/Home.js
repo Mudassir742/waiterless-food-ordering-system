@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion/dist/es/index";
+import AddNewCategory from "../popups/AddNewCatgory";
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
+  const [showAddMenu, setShowAddMenu] = useState(false);
 
   useEffect(() => {
     const getItemData = async () => {
@@ -18,7 +20,7 @@ const Home = () => {
 
     getItemData();
     // console.log(categories);
-  }, []);
+  }, [showAddMenu]);
 
   return (
     <motion.div
@@ -31,7 +33,9 @@ const Home = () => {
       <div className="home-container">
         <div className="home-header">
           <h2>Categories</h2>
-          <button>Add Category</button>
+          <button onClick={(e) => setShowAddMenu(!showAddMenu)}>
+            Add Category
+          </button>
         </div>
         <div className="home-body">
           <div className="table-header">
@@ -55,6 +59,7 @@ const Home = () => {
           )}
         </div>
       </div>
+      <AddNewCategory show={showAddMenu} setShow={setShowAddMenu} />
     </motion.div>
   );
 };
