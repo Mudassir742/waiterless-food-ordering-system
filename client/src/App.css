@@ -149,11 +149,11 @@
 }
 .item-detail{
   display: flex;
+  align-items: center;
 }
 .item-pic{
   width: 120px;
   height: 120px;
-  background-color: #F28C28;
   margin-right: 1rem;
   border-radius: 3px;
 }

@@ -10,7 +10,7 @@ get http://localhost:5000/data/api/menuitems
 
 ###############
 #get all customers detail......
-get http://localhost:5000/data/api/customers
+get http://localhost:5000/customer/api/customers
 
 
 ##############

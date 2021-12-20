@@ -5,8 +5,10 @@ import AddEmploy from "../popups/AddEmploy";
 
 const Employ = () => {
   const [showAddMenu, setShowAddMenu] = useState(false);
-
+  const [editEmploy, setEditEmploy] = useState({});
   const [employDetail, setEmployDetail] = useState([]);
+
+  const [edit, setEdit] = useState(false);
 
   const getEmployDetail = async () => {
     try {
@@ -28,17 +30,17 @@ const Employ = () => {
 
   const handleAddItem = (e) => {
     e.preventDefault();
-
+    setEdit(false);
     setShowAddMenu(!showAddMenu);
   };
 
-  const deleteEmploy = async (e, employID) => {
+  const deleteEmploy = async (e, employID, employPhoto) => {
     e.preventDefault();
     console.log(employID);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      // body: JSON.stringify({itemPhoto:itemPhoto}),
+      body: JSON.stringify({ employPhoto: employPhoto }),
     };
     const response = await fetch(
       `/employ/deleteemploy/${employID}`,
@@ -46,6 +48,13 @@ const Employ = () => {
     );
 
     getEmployDetail();
+  };
+
+  const editEmployDetail = (e, employ) => {
+    //e.preventDefault();
+    setEdit(true);
+    setEditEmploy(employ);
+    setShowAddMenu(!showAddMenu);
   };
 
   return (
@@ -67,7 +76,15 @@ const Employ = () => {
               <div className="home-body" key={employ.employID}>
                 <div className="item-container">
                   <div className="item-detail">
-                    <div className="item-pic"></div>
+                    
+                    <div className="item-pic">{employ.photo && (
+                      <img
+                        src={employ.photo}
+                        alt="employ"
+                        className="menu-item-image"
+                        style={{borderRadius:'50%'}}
+                      />
+                    )}</div>
                     <div className="item-content">
                       <h4>Name : {employ.name}</h4>
                       <h4>Contact : {employ.contact}</h4>
@@ -76,8 +93,14 @@ const Employ = () => {
                     </div>
                   </div>
                   <div className="item-buttons">
-                    <button>Edit</button>
-                    <button onClick={(e) => deleteEmploy(e, employ.employID)}>
+                    <button onClick={(e) => editEmployDetail(e, employ)}>
+                      Edit
+                    </button>
+                    <button
+                      onClick={(e) =>
+                        deleteEmploy(e, employ.employID, employ.photo)
+                      }
+                    >
                       Delete
                     </button>
                   </div>
@@ -86,7 +109,18 @@ const Employ = () => {
             );
           })}
       </div>
-      <AddEmploy show={showAddMenu} setShow={setShowAddMenu} />
+      <AddEmploy
+        show={showAddMenu}
+        setShow={setShowAddMenu}
+        name={edit ? editEmploy.name : ""}
+        userName={edit ? editEmploy.username : ""}
+        password={edit ? editEmploy.password : ""}
+        contact={edit ? editEmploy.contact : ""}
+        role={edit ? editEmploy.employRole : ""}
+        address={edit ? editEmploy.address : ""}
+        employID={edit ? editEmploy.employID : ""}
+        isEdit={edit}
+      />
     </motion.div>
   );
 };

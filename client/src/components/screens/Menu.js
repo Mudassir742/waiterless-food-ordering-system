@@ -73,7 +73,7 @@ const Menu = () => {
                 <div className="item-container" key={index}>
                   <div className="item-detail">
                     <div className="item-pic">
-                      {items.itemPhoto && <img src={items.itemPhoto} alt="Item-Photo" className="menu-item-image"/>}
+                      {items.itemPhoto && <img src={items.itemPhoto} alt="Menu-Item" className="menu-item-image" style={{borderRadius:'10%'}}/>}
                     </div>
                     <div className="item-content">
                       <h4>Name : {items.itemName}</h4>

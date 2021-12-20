@@ -13,9 +13,9 @@ create table Customer(
     primary key(cID)
 );
 
-drop table customer;
+drop table Customer;
 
-insert into Customer values(4,"none","Usama","Ishfaq","Usama123","Usama123","030000","Jahaniya");
+insert into Customer values(3,"none","Ahmad","Ahmad123","Ahmad123","030000","Gujrawala");
 
 select * from Customer;
 

@@ -8,7 +8,7 @@ const Customer = () => {
     const getCustomerData = async () => {
       try {
         const headers = { "Content-Type": "application/json" };
-        const response = await fetch("/data/api/customers", { headers });
+        const response = await fetch("/customer/api/customers", { headers });
         const data = await response.json();
         setCustomers(data.data);
       } catch (error) {
