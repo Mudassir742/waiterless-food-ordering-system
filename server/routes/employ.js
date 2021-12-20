@@ -59,8 +59,7 @@ router.get("/allemploy", (req, res) => {
       return res.status(400).send({ data: err.message });
     }
 
-    const getEmploy =
-      "select name,username,contact,employRole,address from Employ";
+    const getEmploy = "select * from Employ";
 
     connection.query(getEmploy, (err, data) => {
       connection.release();
