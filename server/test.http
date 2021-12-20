@@ -39,3 +39,42 @@ content-type: application/json
     "itemName":"Star Burger",
     "itemPrice":"250"
 }
+
+####################
+//add new employ
+
+post http://localhost:5000/employ/newemploy
+content-type: application/json
+
+{
+    "name":"sufiyan",
+    "userName":"saifi123",
+    "password":"saifi123",
+    "contact":"0300000000",
+    "address":"House No ......",
+    "role":"manager"
+}
+
+#########################
+//get all employ....
+get http://localhost:5000/employ/allemploy
+
+#############3
+//delete an employ......
+post http://localhost:5000/employ/deleteemploy/4f2141498c63a565ed2f0807e21ba71c
+
+
+###################3
+//update employ.......
+post http://localhost:5000/employ/updateemploy
+content-type: application/json
+
+{
+    "employID":"acdd31c53a571cc25b733c9fc9b62145",
+    "name":"sufiyan",
+    "userName":"saifi123",
+    "password":"saifi123",
+    "contact":"0300000000",
+    "address":"House No ......",
+    "role":"cashier"
+}

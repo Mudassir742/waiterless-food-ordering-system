@@ -5,14 +5,15 @@ use restaurant;
 create table Customer(
     cID int not null AUTO_INCREMENT,
     photo VARCHAR(100),
-    fname varchar(30) not null,
-    lname varchar(30) not null,
+    name varchar(30) not null,
     username varchar(30) not null,
     password varchar(30) not null,
     contact varchar(50) not null,
     address varchar(50) not null,
     primary key(cID)
 );
+
+drop table customer;
 
 insert into Customer values(4,"none","Usama","Ishfaq","Usama123","Usama123","030000","Jahaniya");
 
@@ -21,8 +22,7 @@ select * from Customer;
 create table Admin(
     adminID int not null AUTO_INCREMENT,
     photo VARCHAR(100),
-    fname varchar(30) not null,
-    lname varchar(30) not null,
+    name varchar(30) not null,
     username varchar(30) not null,
     password varchar(30) not null,
     contact varchar(50) not null,
@@ -30,17 +30,24 @@ create table Admin(
     primary key(cID)
 );
 
-create table Manager(
-    managerID int not null AUTO_INCREMENT,
+create table Employ(
+    employID VARCHAR(50) not null,
     photo VARCHAR(100),
-    fname varchar(30) not null,
-    lname varchar(30) not null,
+    name varchar(50) not null,
+    employRole VARCHAR(20) not null,
     username varchar(30) not null,
     password varchar(30) not null,
     contact varchar(50) not null,
     address varchar(50) not null,
-    primary key(cID)
+    primary key(employID)
 );
+
+
+DROP table Employ;
+
+
+
+SELECT * from Employ;
 
 create table Orders(
     oID int not null AUTO_INCREMENT,
@@ -50,7 +57,6 @@ create table Orders(
     status varchar(30),
     totalAmount int, 
     primary key(oID),
-    FOREIGN KEY(cID) REFERENCES Customer(cID)
 );
 
 drop table Orders;

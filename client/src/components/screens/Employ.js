@@ -1,7 +1,43 @@
-import React from "react";
+import React,{useState,useEffect} from "react";
 import { motion } from "framer-motion/dist/es/index";
 
+import AddEmploy from "../popups/AddEmploy";
+
+
 const Employ = () => {
+
+  const [showAddMenu, setShowAddMenu] = useState(false);
+
+  const [employDetail,setEmployDetail] = useState([])
+
+  const getMenuItemData = async () => {
+    const headers = { "Content-Type": "application/json" };
+    const response = await fetch("/data/api/menuitems", { headers });
+    const data = await response.json();
+
+
+  };
+
+  const handleAddItem = (e) => {
+    e.preventDefault();
+  
+    setShowAddMenu(!showAddMenu);
+  };
+
+  // const deleteItems = async (e, itemID,itemPhoto) => {
+  //   e.preventDefault();
+  //   console.log(itemID);
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify({itemPhoto:itemPhoto}),
+  //   };
+  //   const response = await fetch(`/data/removeitem/${itemID}`,requestOptions);
+
+  //   console.log(response.data);
+  //   getMenuItemData();
+  // };
+
   return (
     <motion.div
     exit={{ opacity: 0 }}
@@ -12,7 +48,7 @@ const Employ = () => {
       <div className="home-container">
         <div className="home-header">
           <h2>Employ</h2>
-          <button>Add Employ</button>
+          <button onClick={handleAddItem}>Add Employ</button>
         </div>
         <div className="home-body">
           <div className="item-container">
@@ -62,6 +98,8 @@ const Employ = () => {
           </div>
         </div>
       </div>
+      <AddEmploy show={showAddMenu}
+        setShow={setShowAddMenu}/>
     </motion.div>
   );
 };

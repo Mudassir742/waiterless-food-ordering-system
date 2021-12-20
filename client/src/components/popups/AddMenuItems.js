@@ -39,7 +39,7 @@ const AddMenuItems = (props) => {
       console.log(ex);
     }
   };
-  console.log(file);
+  //console.log(file);
 
   //side Effect for image preview......
   useEffect(() => {
@@ -101,7 +101,7 @@ const AddMenuItems = (props) => {
     }
   };
 
-  console.log(newMenuItem);
+  //console.log(newMenuItem);
 
   useEffect(() => {
     getSelectInputCategories();
