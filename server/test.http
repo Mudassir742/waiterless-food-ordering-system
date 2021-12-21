@@ -78,3 +78,37 @@ content-type: application/json
     "address":"House No ......",
     "role":"cashier"
 }
+
+
+####################
+//add new customer
+
+post http://localhost:5000/customer/newcustomer
+content-type: application/json
+
+{
+    "name":"Haseeb",
+    "userName":"Haseeb123",
+    "password":"haseeb123",
+    "contact":"0300000000",
+    "address":"Pakpattan"
+}
+
+####################
+//update customer
+
+post http://localhost:5000/customer/updatecustomer
+content-type: application/json
+
+{
+    "customerID":"2b5163f4884d2e5e653ad0fe7c6ee990",
+    "name":"Haseeb",
+    "userName":"Haseeb123",
+    "password":"haseeb123",
+    "contact":"0300000000",
+    "address":"LAhore"
+}
+
+#################
+///delete customer..............
+post http://localhost:5000/customer/deletecustomer/2b5163f4884d2e5e653ad0fe7c6ee990

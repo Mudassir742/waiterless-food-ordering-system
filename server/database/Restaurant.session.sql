@@ -3,14 +3,13 @@ CREATE database restaurant;
 use restaurant;
 
 create table Customer(
-    cID int not null AUTO_INCREMENT,
-    photo VARCHAR(100),
+    customerID varchar(50) not null,
     name varchar(30) not null,
     username varchar(30) not null,
     password varchar(30) not null,
     contact varchar(50) not null,
     address varchar(50) not null,
-    primary key(cID)
+    primary key(customerID)
 );
 
 drop table Customer;
