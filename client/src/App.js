@@ -1,25 +1,34 @@
-import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
+import { useState } from "react";
+import { Provider } from "react-redux";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import "./App.css"
+import Admin from "./components/Admin/Admin";
+import Customer from "./components/Customer/Customer";
+import Login from "./components/auth/Login";
+import ReviewOrder from "./components/Customer/screens/RviewOrder";
+import Signup from "./components/auth/Signup";
 
-import Navigation from "./components/Navigation";
-import Home from "./components/screens/Home";
-import Menu from "./components/screens/Menu";
-import Customer from "./components/screens/Customer";
-import Employ from "./components/screens/Employ";
+import Store from "./components/Customer/store/index";
 
+import "./App.css";
 
 function App() {
+  const [role, setRole] = useState("");
+
   return (
-    <Router>
-      <Navigation/>
-      <Routes>
-        <Route path="/" element={<Home/>}/>
-        <Route path="/menu" element={<Menu/>}/>
-        <Route path="/customer" element={<Customer/>}/>
-        <Route path="/employ" element={<Employ/>}/>
-      </Routes>
-    </Router>
+    <Provider store={Store}>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login setRole={setRole} />} />
+          <Route path="/signup" element={<Signup />} />
+
+          {/* <Route path="/admin" element={<Admin />} />
+          <Route path="/customer" element={<Customer />} /> */}
+        </Routes>
+      </Router>
+      {role.toLowerCase() === "customer" && <Customer />}
+      {role.toLowerCase() === "admin" && <Admin />}
+    </Provider>
   );
 }
 

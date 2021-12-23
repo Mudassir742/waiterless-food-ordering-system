@@ -6,6 +6,7 @@ create table Customer(
     customerID varchar(50) not null,
     name varchar(30) not null,
     username varchar(30) not null,
+    employRole VARCHAR(20),
     password varchar(30) not null,
     contact varchar(50) not null,
     address varchar(50) not null,
@@ -15,19 +16,28 @@ create table Customer(
 drop table Customer;
 
 insert into Customer values(3,"none","Ahmad","Ahmad123","Ahmad123","030000","Gujrawala");
-
 select * from Customer;
 
+
 create table Admin(
-    adminID int not null AUTO_INCREMENT,
+    adminID int not null,
     photo VARCHAR(100),
     name varchar(30) not null,
     username varchar(30) not null,
+    employRole VARCHAR(20) not null,
     password varchar(30) not null,
     contact varchar(50) not null,
     address varchar(50) not null,
-    primary key(cID)
+    primary key(adminID)
 );
+
+
+drop table Admin;
+
+select * from Admin;
+
+insert into Admin(adminID,photo,name,username,employRole,password,contact,address)
+VALUES(123,null,"admin","admin123","admin","admin123","030000000","Lahore")
 
 create table Employ(
     employID VARCHAR(50) not null,
@@ -49,18 +59,18 @@ DROP table Employ;
 SELECT * from Employ;
 
 create table Orders(
-    oID int not null AUTO_INCREMENT,
-    cID int not null,
-    createAt DATETIME,
-    diliveredAT Datetime,
+    orderID varchar(50) not null,
+    customerID varchar(50) not null,
+    createAt VARCHAR(50),
+    diliveredAT VARCHAR(50),
     status varchar(30),
     totalAmount int, 
-    primary key(oID),
+    primary key(orderID)
 );
 
 drop table Orders;
 
-insert into Orders(oID,cID,createAt,diliveredAT,status,totalAmount)
+insert into Orders(ID,cID,createAt,diliveredAT,status,totalAmount)
 values(1,1,now(),null,"pending",null);
 
 update Orders
@@ -75,13 +85,11 @@ select * from Orders;
 
 
 create table FoodItem(
-    itemID int not null,
-    oID int not null,
+    itemID varchar(50) not null,
+    orderID  varchar(50) not null,
     itemPrice int,
-    quantity int, 
-    primary key(oID,itemID),
-    FOREIGN KEY(oID) REFERENCES Orders(oID),
-    FOREIGN KEY(itemID) REFERENCES MenuItems(mItemID)
+    itemQuantity int, 
+    primary key(orderID,itemID)
 );
 
 insert into FoodItem(itemID,oID,itemPrice,quantity)

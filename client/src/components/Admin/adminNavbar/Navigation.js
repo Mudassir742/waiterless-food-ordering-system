@@ -6,16 +6,16 @@ const Navigation = () => {
     <div className="navigation-container">
       <h1 className="logo">Logo</h1>
       <nav className="nav-links">
-        <NavLink to="/" className="links">
+        <NavLink to="/admin" className="links">
           Home
         </NavLink>
-        <NavLink to="/menu" className="links">
+        <NavLink to="/adminmenu" className="links">
           Menu
         </NavLink>
-        <NavLink to="/customer" className="links">
+        <NavLink to="/admincustomer" className="links">
           Customer
         </NavLink>
-        <NavLink to="/employ" className="links">
+        <NavLink to="/adminemploy" className="links">
           Employ
         </NavLink>
       </nav>

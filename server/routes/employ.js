@@ -22,32 +22,93 @@ router.post("/newemploy", (req, res) => {
       return res.status(400).send({ data: err.message });
     }
 
-    const addNewEmploy =
-      "INSERT INTO ?? (??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?)";
-    const query = mysql.format(addNewEmploy, [
-      "Employ",
-      "employID",
-      "name",
+    let checkUsername = "Select username from ?? where ?? = ?";
+    const query = mysql.format(checkUsername, [
+      "Customer",
       "username",
-      "password",
-      "contact",
-      "address",
-      "employRole",
-      employID,
-      name,
       userName,
-      password,
-      contact,
-      address,
-      role,
     ]);
 
-    connection.query(query, (err, data) => {
-      connection.release();
+    connection.query(query, (err, rows) => {
       if (err) {
         return res.status(400).send({ data: err.message });
       }
-      return res.status(201).send({ data:employID});
+
+      if (rows.length !== 0) {
+        return res.status(400).send({ data: "user Exists" });
+      }
+
+      connection.query(query, (err, rows) => {
+        if (err) {
+          return res.status(400).send({ data: err.message });
+        }
+
+        if (rows.length !== 0) {
+          return res.status(400).send({ data: "user Exists" });
+        }
+
+        const query = mysql.format(checkUsername, [
+          "Employ",
+          "username",
+          userName,
+        ]);
+
+        connection.query(query, (err, rows) => {
+          if (err) {
+            return res.status(400).send({ data: err.message });
+          }
+
+          if (rows.length !== 0) {
+            return res.status(400).send({ data: "user Exists" });
+          }
+
+          const query = mysql.format(checkUsername, [
+            "Admin",
+            "username",
+            userName,
+          ]);
+
+          connection.query(query, (err, rows) => {
+            if (err) {
+              return res.status(400).send({ data: err.message });
+            }
+
+            if (rows.length !== 0) {
+              return res.status(400).send({ data: "user Exists" });
+            }
+
+            const addNewEmploy =
+              "INSERT INTO ?? (??,??,??,??,??,??,??) VALUES (?,?,?,?,?,?,?)";
+            const query = mysql.format(addNewEmploy, [
+              "Employ",
+              "employID",
+              "name",
+              "username",
+              "password",
+              "contact",
+              "address",
+              "employRole",
+              employID,
+              name,
+              userName,
+              password,
+              contact,
+              address,
+              role,
+            ]);
+
+            connection.query(query, (err, data) => {
+              connection.release();
+              if (err) {
+                return res.status(400).send({ data: err.message });
+              }
+              return res
+                .status(201)
+                .send({ data: employID, message: "register" });
+            });
+          });
+        });
+      });
     });
   });
 });
@@ -89,13 +150,13 @@ router.post("/deleteemploy/:id", (req, res) => {
         employID,
       ]);
 
-      connection.query(query, async(err, data) => {
+      connection.query(query, async (err, data) => {
         connection.release();
         if (err) {
           res.send({ message: err.message });
         } else {
           try {
-            await unlinkAsync("./public"+employPhoto)
+            await unlinkAsync("./public" + employPhoto);
             console.log("Image Deleted");
             return res
               .status(200)
@@ -120,36 +181,97 @@ router.post("/updateemploy", (req, res) => {
 
   pool.getConnection((err, connection) => {
     if (err) {
-      return res.send({ data: err.message });
-    } else {
-      const updateMenuItem =
-        "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?,?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
-      const query = mysql.format(updateMenuItem, [
-        "Employ",
-        "name",
-        name,
-        "username",
-        userName,
-        "employRole",
-        role,
-        "password",
-        password,
-        "contact",
-        contact,
-        "address",
-        address,
-        "employID",
-        employID,
-      ]);
-      connection.query(query, (err, rows) => {
-        connection.release();
-        if (err) {
-          return res.send({ data: err.message });
-        } else {
-          return res.status(200).send({ data: rows });
-        }
-      });
+      return res.status(400).send({ data: err.message });
     }
+
+    let checkUsername = "Select username from ?? where ?? = ?";
+    const query = mysql.format(checkUsername, [
+      "Customer",
+      "username",
+      userName,
+    ]);
+
+    connection.query(query, (err, rows) => {
+      if (err) {
+        return res.status(400).send({ data: err.message });
+      }
+
+      if (rows.length !== 0) {
+        return res.status(400).send({ data: "user Exists" });
+      }
+
+      connection.query(query, (err, rows) => {
+        if (err) {
+          return res.status(400).send({ data: err.message });
+        }
+
+        if (rows.length !== 0) {
+          return res.status(400).send({ data: "user Exists" });
+        }
+
+        const query = mysql.format(checkUsername, [
+          "Employ",
+          "username",
+          userName,
+        ]);
+
+        connection.query(query, (err, rows) => {
+          if (err) {
+            return res.status(400).send({ data: err.message });
+          }
+
+          if (rows.length !== 0) {
+            return res.status(400).send({ data: "user Exists" });
+          }
+
+          const query = mysql.format(checkUsername, [
+            "Admin",
+            "username",
+            userName,
+          ]);
+
+          connection.query(query, (err, rows) => {
+            if (err) {
+              return res.status(400).send({ data: err.message });
+            }
+
+            if (rows.length !== 0) {
+              return res.status(400).send({ data: "user Exists" });
+            }
+
+            const updateMenuItem =
+              "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?,?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+            const query = mysql.format(updateMenuItem, [
+              "Employ",
+              "name",
+              name,
+              "username",
+              userName,
+              "employRole",
+              role,
+              "password",
+              password,
+              "contact",
+              contact,
+              "address",
+              address,
+              "employID",
+              employID,
+            ]);
+
+            connection.query(query, (err, data) => {
+              connection.release();
+              if (err) {
+                return res.status(400).send({ data: err.message });
+              }
+              return res
+                .status(201)
+                .send({ data: employID, message: "updated" });
+            });
+          });
+        });
+      });
+    });
   });
 });
 
@@ -164,43 +286,48 @@ const storage = multer.diskStorage({
 const upload = multer({
   storage: storage,
   limits: { fileSize: 1000000 },
-})
-
-router.post("/upload/employimage/:employID", upload.single("employImage"), (req, res) => {
-  console.log("inside upload");
-  console.log(req.params.employID);
-  const employID = req.params.employID;
-  if (!req.file) {
-    console.log("No file upload");
-    res.send({ message: "err" });
-  } else {
-    pool.getConnection((err, connection) => {
-      if (err) {
-        return res.send({ message: err.message });
-      }
-      console.log(req.file.filename);
-
-      const imgsrc = "/users/" + req.file.filename;
-      console.log(imgsrc);
-
-      const updateMenuItem = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
-      const query = mysql.format(updateMenuItem, [
-        "Employ",
-        "photo",
-        imgsrc,
-        "employID",
-        employID,
-      ]);
-      connection.query(query, (err, rows) => {
-        connection.release();
-        if (err) {
-          return res.send({ message: err.message });
-        } else {
-          return res.status(200).send({ data: "Image Uploaded" });
-        }
-      });
-    });
-  }
 });
 
+router.post(
+  "/upload/employimage/:employID",
+  upload.single("employImage"),
+  (req, res) => {
+    console.log("inside upload");
+    console.log(req.params.employID);
+    const employID = req.params.employID;
+    if (!req.file) {
+      console.log("No file upload");
+      res.send({ message: "err" });
+    } else {
+      pool.getConnection((err, connection) => {
+        if (err) {
+          return res.send({ message: err.message });
+        }
+        console.log(req.file.filename);
+
+        const imgsrc = "/users/" + req.file.filename;
+        console.log(imgsrc);
+
+        const updateMenuItem = "UPDATE ?? SET ?? = ? WHERE ?? = ?";
+        const query = mysql.format(updateMenuItem, [
+          "Employ",
+          "photo",
+          imgsrc,
+          "employID",
+          employID,
+        ]);
+        connection.query(query, (err, rows) => {
+          connection.release();
+          if (err) {
+            return res.send({ message: err.message });
+          } else {
+            return res.status(200).send({ data: "Image Uploaded" });
+          }
+        });
+      });
+    }
+  }
+);
+
 module.exports = router;
+/////////////

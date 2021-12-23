@@ -48,7 +48,7 @@ content-type: application/json
 
 {
     "name":"sufiyan",
-    "userName":"saifi123",
+    "userName":"saifi12",
     "password":"saifi123",
     "contact":"0300000000",
     "address":"House No ......",
@@ -72,7 +72,7 @@ content-type: application/json
 {
     "employID":"acdd31c53a571cc25b733c9fc9b62145",
     "name":"sufiyan",
-    "userName":"saifi123",
+    "userName":"Saifi123",
     "password":"saifi123",
     "contact":"0300000000",
     "address":"House No ......",
@@ -101,14 +101,32 @@ post http://localhost:5000/customer/updatecustomer
 content-type: application/json
 
 {
-    "customerID":"2b5163f4884d2e5e653ad0fe7c6ee990",
+    "customerID":"4d1408a6fbcf30bf2abc4e18ff33d8dc",
     "name":"Haseeb",
-    "userName":"Haseeb123",
-    "password":"haseeb123",
+    "userName":"admin123",
+    "password":"Sarib123123",
     "contact":"0300000000",
     "address":"LAhore"
 }
 
 #################
-///delete customer..............
-post http://localhost:5000/customer/deletecustomer/2b5163f4884d2e5e653ad0fe7c6ee990
+///login user..............
+post http://localhost:5000/auth/user/login
+content-type: application/json
+
+{
+
+    "userName":"admin12",
+    "password":"admin123"
+}
+
+#####################
+///place order
+
+post http://localhost:5000/order/placeorder
+content-type: application/json
+
+{
+    "customerID":"4d1408a6fbcf30bf2abc4e18ff33d8dc",
+    "totalPrice":"1000"
+}
