@@ -85,4 +85,28 @@ router.get("/allorders", (req, res) => {
   });
 });
 
+//get orders of specific customer....
+router.get("/orders/:id", (req, res) => {
+  console.log("inside")
+
+  const customerID = req.params.id
+
+  pool.getConnection((err, connection) => {
+    if (err) {
+      return res.status(400).send({ data: err.message });
+    }
+
+    const getOrder = `select * from Orders where ?? = ? `;
+    const query = mysql.format(getOrder,["customerID",customerID])
+
+    connection.query(query, (err, data) => {
+      connection.release();
+      if (err) {
+        return res.status(400).send({ data: err.message });
+      }
+      return res.status(201).send({ data: data });
+    });
+  });
+});
+
 module.exports = router;

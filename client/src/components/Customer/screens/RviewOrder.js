@@ -12,7 +12,7 @@ const RviewOrder = (props) => {
   useEffect(() => {
     let count = 0;
     for (let i = 0; i < props.cartItem.length; i++) {
-      count = count + props.cartItem[i].itemPrice;
+      count = count + props.cartItem[i].itemPrice * props.cartItem[i].itemQuantity;
     }
     //console.log(count)
     setTotalPrice(count);
@@ -29,7 +29,7 @@ const RviewOrder = (props) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          customerID: "4d1408a6fbcf30bf2abc4e18ff33d8dc",
+          customerID: props.user.customerID,
           totalPrice,
           foodItems: props.cartItem,
         }),
@@ -41,6 +41,7 @@ const RviewOrder = (props) => {
         toast.success("Order is Placed");
         console.log("Order Placed");
         setTimeout(() => {
+          props.clearCart()
           navigate("/customer");
         }, 2000);
       } else {
@@ -62,9 +63,9 @@ const RviewOrder = (props) => {
             <h2>Price</h2>
           </div>
 
-          {props.cartItem.map((item) => {
+          {props.cartItem.map((item,index) => {
             return (
-              <div className="items-in-order">
+              <div className="items-in-order" key={index}>
                 <div className="items-detail">
                   <span>{item.itemName}</span>
                   <span>{item.itemQuantity}</span>
@@ -76,7 +77,7 @@ const RviewOrder = (props) => {
 
           <div className="total">
             <h2>Total</h2>
-            <h2 class="total-price">{totalPrice}</h2>
+            <h2 className="total-price">{totalPrice}</h2>
           </div>
         </div>
         <button className="place-order-btn" onClick={placeOrder}>
@@ -104,4 +105,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(RviewOrder);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearCart: () => dispatch({ type: "CLEAR_CART", payload: {}}),
+  }
+};
+
+export default connect(mapStateToProps,mapDispatchToProps)(RviewOrder);

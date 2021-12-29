@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { NavLink,Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const CustomerNavbar = (props) => {
   const [cartQauntity, setCartQunatity] = useState(0);
+
 
   useEffect(() => {
     let count = 0;
@@ -19,7 +20,6 @@ const CustomerNavbar = (props) => {
 
   const logout = (e) => {
     props.setRole("");
-    console.log("clicked")
     navigate("/");
   };
 
@@ -37,12 +37,20 @@ const CustomerNavbar = (props) => {
           <span>{cartQauntity}</span>
         </div>
       </Link>
-      <div className="admin-profile">
+      <Link
+        to="/customerprofile"
+        className="admin-profile"
+      >
         <div className="admin-pic"></div>
         <h3>{props.user.name}</h3>
-        <div style={{color:"white"}}>
-          <Link to="/customerprofile">Profile</Link>
-          <div onClick={logout}>Logout</div>
+      </Link>
+
+      <div style={{ color: "white" }} className="user-menu">
+        <NavLink to="/customerorderhistory" className="list-items">
+          Order History
+        </NavLink>
+        <div onClick={logout} className="list-items">
+          Logout
         </div>
       </div>
     </div>

@@ -37,6 +37,10 @@ const CartItem = (state = [], action) => {
         });
         return newState;
       }
+      case "CLEAR_CART":{
+        let newState = []
+        return newState
+      }
   }
 
   return state;

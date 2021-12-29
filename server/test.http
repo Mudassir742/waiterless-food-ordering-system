@@ -129,3 +129,7 @@ content-type: application/json
     "customerID":"4d1408a6fbcf30bf2abc4e18ff33d8dc",
     "totalPrice":"1000"
 }
+
+#############
+//get orders...........
+get http://localhost:5001/order/orders/6a430b36708ee576065f7befba5785a5

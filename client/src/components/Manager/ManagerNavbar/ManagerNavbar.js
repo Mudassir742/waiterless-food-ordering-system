@@ -1,14 +1,12 @@
-import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React from "react";
+import { NavLink,Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const ManagerNavbar = (props) => {
-  const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
 
   const logout = (e) => {
     props.setRole("");
-    console.log("clicked");
     navigate("/");
   };
 
@@ -20,12 +18,18 @@ const ManagerNavbar = (props) => {
           Orders
         </NavLink>
       </nav>
-      <div className="admin-profile" onClick={(e) => setShowMenu(!showMenu)}>
-        <div className="admin-pic"></div>
+      <Link
+        to="/customerprofile"
+        className="admin-profile"
+      >
+        <div className="admin-pic">
+        </div>
         <h3>{props.user.name}</h3>
-        <div style={{ color: "white" }}>
-          <div>Profile</div>
-          <div onClick={logout}>Logout</div>
+      </Link>
+
+      <div style={{ color: "white" }} className="user-menu">
+        <div onClick={logout} className="list-items">
+          Logout
         </div>
       </div>
     </div>

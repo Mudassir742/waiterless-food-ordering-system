@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion/dist/es/index";
 
-const ManageOrders = () => {
+const OrderHistory = (props) => {
   const [orders, setOrders] = useState([]);
-
   const getAllOrders = async () => {
     const headers = { "Content-Type": "application/json" };
-    const response = await fetch("/order/allorders", { headers });
+    const response = await fetch(`/order/orders/${props.user.customerID}`, { headers });
     const data = await response.json();
 
     setOrders(data.data);
   };
 
-  console.log(orders);
+  console.log(orders)
 
   useEffect(() => {
     getAllOrders();
@@ -61,4 +60,4 @@ const ManageOrders = () => {
   );
 };
 
-export default ManageOrders;
+export default OrderHistory;

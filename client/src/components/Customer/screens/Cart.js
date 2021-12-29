@@ -11,7 +11,7 @@ const Cart = (props) => {
   useEffect(() => {  
     let count = 0;
     for (let i = 0; i < props.cartItem.length; i++) {
-      count = count + props.cartItem[i].itemPrice;
+      count = count + props.cartItem[i].itemPrice * props.cartItem[i].itemQuantity;
     }
     //console.log(count)
     setTotalPrice(count);
@@ -56,9 +56,9 @@ const Cart = (props) => {
               </div>
             );
           })
-        ) : (
-          <h1>Oops! Cart is Empty</h1>
-        )}
+        ) : 
+         <h1>Oops! Cart is Empty</h1>
+        }
 
       </div>
       <Link to="/revieworder" className={props.cartItem.length ? "showbutton" : "hidebutton"}><span>CheckOut</span><span className="price-in-btn">RS. {totalPrice}</span></Link>

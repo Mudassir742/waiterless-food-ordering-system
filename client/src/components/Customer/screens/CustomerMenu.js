@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useLayoutEffect } from "react";
 import { connect } from "react-redux";
+import { useNavigate,Navigate} from "react-router-dom";
 
 const CustomerMenu = (props) => {
   const [menuItems, setMenuItems] = useState([]);
+
+  const navigate = useNavigate()
 
   const getMenuItemData = async () => {
     const headers = { "Content-Type": "application/json" };
@@ -12,6 +15,14 @@ const CustomerMenu = (props) => {
     setMenuItems(data.data);
   };
 
+  console.log(props.role)
+
+  // useEffect(()=>{
+  //   if(props.role === ""){
+      
+  //   }
+  // },[])
+
   useEffect(() => {
     getMenuItemData();
   }, []);
@@ -20,6 +31,10 @@ const CustomerMenu = (props) => {
     e.preventDefault();
     props.addItems(items);
   };
+
+  if(!props.role){
+    return <Navigate replace to="/" />
+  }
 
   return (
     <div className="menu-container">

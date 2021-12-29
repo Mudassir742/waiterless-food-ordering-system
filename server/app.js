@@ -22,4 +22,4 @@ app.use("/employ",employ)
 app.use("/auth",authentication)
 app.use("/order",order)
 
-app.listen(5000, () => console.log(`Server is up and running on port 5000!`));
+app.listen(5001, () => console.log(`Server is up and running on port 5001!`));

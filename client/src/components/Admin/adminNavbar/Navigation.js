@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink,Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const Navigation = (props) => {
@@ -28,12 +28,17 @@ const Navigation = (props) => {
           Employ
         </NavLink>
       </nav>
-      <div className="admin-profile">
+      <Link
+        to="/customerprofile"
+        className="admin-profile"
+      >
         <div className="admin-pic"></div>
         <h3>{props.user.name}</h3>
-        <div style={{color:"white"}}>
-          <div>Profile</div>
-          <div onClick={logout}>Logout</div>
+      </Link>
+
+      <div style={{ color: "white" }} className="user-menu">
+        <div onClick={logout} className="list-items">
+          Logout
         </div>
       </div>
     </div>
