@@ -69,7 +69,7 @@ const Signup = () => {
         <div className="login-content">
           <div className="login-logo">
             <h1>SignUp</h1>
-            <button onClick={()=>navigate("/")}>Don't have an account? Sign Up</button>
+            <button onClick={()=>navigate("/")}>Already a User</button>
           </div>
           <section className="login-input-section">
             <form className="login-form">

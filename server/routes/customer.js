@@ -162,7 +162,7 @@ router.post("/updatecustomer", (req, res) => {
         }
 
         if (rows.length !== 0) {
-          return res.status(400).send({ data: "user Exists" });
+          return res.status(400).send({ message: "user Exists" });
         }
 
         const query = mysql.format(checkUsername, [
@@ -177,7 +177,7 @@ router.post("/updatecustomer", (req, res) => {
           }
 
           if (rows.length !== 0) {
-            return res.status(400).send({ data: "user Exists" });
+            return res.status(400).send({ message: "user Exists" });
           }
 
           const query = mysql.format(checkUsername, [
@@ -192,7 +192,7 @@ router.post("/updatecustomer", (req, res) => {
             }
 
             if (rows.length !== 0) {
-              return res.status(400).send({ data: "user Exists" });
+              return res.status(400).send({ message: "user Exists" });
             }
 
             const updateCustomer =

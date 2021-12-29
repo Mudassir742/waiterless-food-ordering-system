@@ -53,6 +53,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  position: relative;
 }
 
 .admin-pic {
@@ -371,7 +372,7 @@
 
 .add-to-cart-button {
   width: 100%;
-  
+
 }
 
 .add-to-cart-button button {
@@ -410,7 +411,7 @@
   justify-content: center;
 }
 
-.itemQuantity{
+.itemQuantity {
   position: absolute;
   top: -5%;
   right: -5%;
@@ -424,7 +425,7 @@
   justify-content: center;
 }
 
-.cart-buttons{
+.cart-buttons {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -432,7 +433,7 @@
   margin: 1rem 0;
 }
 
-.cart-buttons button{
+.cart-buttons button {
   background-color: #181818;
   color: white;
   font-weight: bold;
@@ -444,48 +445,48 @@
   font-size: 1.5rem;
 }
 
-.review-order-main{
+.review-order-main {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction:column;
+  flex-direction: column;
 }
 
-.review-order-container{
+.review-order-container {
   margin-top: 4rem;
   border: 1px solid black;
   padding: 1rem;
 }
 
-.review-order-card{
+.review-order-card {
   margin: 2rem 0;
 }
 
-.items-detail{
+.items-detail {
   display: flex;
   margin-bottom: 1.5rem;
 }
 
-.items-detail h2{
+.items-detail h2 {
   margin-right: 5rem;
 }
 
-.items-detail span{
-margin-right: 6.4rem;
+.items-detail span {
+  margin-right: 6.4rem;
 }
 
-.total{
+.total {
   border-top: 1px solid black;
   margin-top: 2rem;
   display: flex;
   padding: .5rem 0;
 }
 
-.total-price{
+.total-price {
   margin-left: 17rem;
 }
 
-.place-order-btn{
+.place-order-btn {
   margin: 0 auto;
   width: 150px;
   padding: .6rem 0;
@@ -498,11 +499,11 @@ margin-right: 6.4rem;
   letter-spacing: 1px;
 }
 
-.hidebutton{
+.hidebutton {
   display: none;
 }
 
-.showbutton{
+.showbutton {
   display: block;
   position: fixed;
   bottom: 20px;
@@ -519,65 +520,65 @@ margin-right: 6.4rem;
   font-size: 1.2rem;
 }
 
-.price-in-btn{
+.price-in-btn {
   display: inline-block;
   margin-left: 1rem;
 }
 
-.login-outer-section{
+.login-outer-section {
   display: flex;
   align-items: center;
   justify-content: center;
 
 }
 
-.login-inner-section{
+.login-inner-section {
   border: 1px solid black;
   margin: 4rem 0;
 }
 
 
-.login-logo{
+.login-logo {
   margin: 2rem;
 }
 
-.login-logo button{
-  
-  border:transparent;
+.login-logo button {
+
+  border: transparent;
   background-color: transparent;
   border-bottom: 1px solid black;
   margin: 1rem 2rem;
-  cursor: pointer;  
+  cursor: pointer;
 }
 
-.login-line{
+.login-line {
   border-top: 1px solid black;
   margin-bottom: 2rem;
 }
 
-.login-form{
+.login-form {
   padding: 2rem 2rem;
   display: flex;
   flex-direction: column;
 }
 
-.login-form label{
+.login-form label {
   font-size: 1.4rem;
   font-weight: bold;
   margin-bottom: .5rem;
 }
 
-.login-form input{
+.login-form input {
   margin-bottom: 1rem;
   padding: .4rem;
   font-size: 1.1rem;
 }
 
-.remember{
+.remember {
   margin-bottom: 1rem;
 }
 
-.login-form button{
+.login-form button {
   padding: .4rem;
   color: white;
   font-weight: bold;
@@ -586,3 +587,41 @@ margin-right: 6.4rem;
   border-radius: 10px;
 }
 
+.order-container {
+  color: #be6205;
+  margin-top: .5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.order-detail {
+  color: white;
+
+  padding: 1rem;
+  border-bottom: 1px solid gray;
+}
+
+.user-menu{
+  border-radius: 10px;
+  color: white;
+  position: absolute;
+  bottom: -125px;
+  right: -10px;
+  background-color: #181818;
+  width: 150px;
+}
+
+.user-menu div {
+  padding: 1rem;
+  border-bottom:1px solid gray;
+  cursor: pointer;
+}
+
+.user-menu div:hover{
+  color: rgb(212, 209, 209);
+}
+
+.hide-user-menu{
+  display: none;
+}

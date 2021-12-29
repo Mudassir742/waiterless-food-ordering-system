@@ -101,10 +101,9 @@ post http://localhost:5000/customer/updatecustomer
 content-type: application/json
 
 {
-    "customerID":"4d1408a6fbcf30bf2abc4e18ff33d8dc",
-    "name":"Haseeb",
-    "userName":"admin123",
-    "password":"Sarib123123",
+    "customerID":"03342f580c4750777aeb4ca7ec5908de",
+    "name":"usama",
+    "userName":"usama",
     "contact":"0300000000",
     "address":"LAhore"
 }

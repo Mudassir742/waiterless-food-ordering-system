@@ -6,10 +6,10 @@ import Menu from "./screens/Menu";
 import Customer from "./screens/Customer";
 import Employ from "./screens/Employ";
 
-const Admin = () => {
+const Admin = ({setRole,user}) => {
   return (
     <>
-      <Navigation />
+      <Navigation setRole={setRole} user={user}/>
       <Routes>
         <Route path="/admin" element={<Home />} />
         <Route path="/adminmenu" element={<Menu />} />

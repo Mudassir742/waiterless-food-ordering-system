@@ -81,7 +81,7 @@ update Orders
 set diliveredAt = now()
 where oID = 1;
 
-select * from Orders;
+SELECT * from Orders;
 
 
 create table FoodItem(
