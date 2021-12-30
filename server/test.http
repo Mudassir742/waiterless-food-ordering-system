@@ -133,3 +133,19 @@ content-type: application/json
 #############
 //get orders...........
 get http://localhost:5001/order/orders/6a430b36708ee576065f7befba5785a5
+
+
+################
+//update status
+
+post http://localhost:5001/order/orders/updatestatus
+content-type: application/json
+
+{
+    "orderID":"0647cec92ebe5001281f8b703c3013c2"
+}
+
+#############
+//get orders...........
+get http://localhost:5001/order/orders/finishedorders
+

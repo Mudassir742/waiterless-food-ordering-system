@@ -625,3 +625,20 @@
   border-radius: 8px;
   transition: all .5s;
 }
+.finish{
+  display:  flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.finish button{
+  margin-left: 1rem;
+  width: 100px;
+  padding: .2rem 0;
+  font: bold;
+}
+
+button{
+  cursor: pointer;
+}
+

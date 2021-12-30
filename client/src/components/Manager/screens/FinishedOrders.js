@@ -3,11 +3,10 @@ import { motion } from "framer-motion/dist/es/index";
 
 const ManageOrders = () => {
   const [orders, setOrders] = useState([]);
-  const [status, setStatus] = useState(false);
 
   const getAllOrders = async () => {
     const headers = { "Content-Type": "application/json" };
-    const response = await fetch("/order/allorders", { headers });
+    const response = await fetch("/order/orders/finishedorders", { headers });
     const data = await response.json();
 
     setOrders(data.data);
@@ -17,25 +16,7 @@ const ManageOrders = () => {
 
   useEffect(() => {
     getAllOrders();
-  }, [status]);
-
-  const deliverOrder = async(e,orderID) =>{
-    e.preventDefault()
-
-    const response = await fetch("/order/orders/updatestatus", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-       orderID
-      }),
-    });
-    const data = await response.json();
-    console.log(data)
-    setStatus(!status);
-  }
-
+  }, []);
 
   return (
     <motion.div
@@ -67,10 +48,7 @@ const ManageOrders = () => {
                   <span>{index + 1}</span>
                   <span>{items.createAt}</span>
                   <span>{items.status}</span>
-                  <div className="finish">
-                    <span>{items.totalAmount}</span>
-                  <button onClick={(e)=>deliverOrder(e,items.orderID)}>Finish</button>
-                  </div>
+                  <span>{items.totalAmount}</span>
                 </div>
               );
             })

@@ -73,9 +73,11 @@ router.get("/allorders", (req, res) => {
       return res.status(400).send({ data: err.message });
     }
 
-    const getEmploy = "select * from Orders";
+    const getOrder = `select * from Orders where ?? = ? `;
+    const query = mysql.format(getOrder,["status","cooking"])
 
-    connection.query(getEmploy, (err, data) => {
+
+    connection.query(query, (err, data) => {
       connection.release();
       if (err) {
         return res.status(400).send({ data: err.message });
@@ -86,6 +88,28 @@ router.get("/allorders", (req, res) => {
 });
 
 //get orders of specific customer....
+router.get("/orders/finishedorders", (req, res) => {
+  console.log("inside")
+
+  pool.getConnection((err, connection) => {
+    if (err) {
+      return res.status(400).send({ data: err.message });
+    }
+
+    const getOrder = `select * from Orders where ?? = ? `;
+    const query = mysql.format(getOrder,["status","finished"])
+
+    connection.query(query, (err, data) => {
+      connection.release();
+      if (err) {
+        return res.status(400).send({ data: err.message });
+      }
+      return res.status(201).send({ data: data });
+    });
+  });
+});
+
+//get finished orders of s
 router.get("/orders/:id", (req, res) => {
   console.log("inside")
 
@@ -99,6 +123,31 @@ router.get("/orders/:id", (req, res) => {
     const getOrder = `select * from Orders where ?? = ? `;
     const query = mysql.format(getOrder,["customerID",customerID])
 
+    connection.query(query, (err, data) => {
+      connection.release();
+      if (err) {
+        return res.status(400).send({ data: err.message });
+      }
+      return res.status(201).send({ data: data });
+    });
+  });
+});
+
+//update status.....
+router.post("/orders/updatestatus", (req, res) => {
+
+  const orderID = req.body.orderID
+  const diliveredAt = new Date().toLocaleString();
+
+  pool.getConnection((err, connection) => {
+    if (err) {
+      return res.status(400).send({ data: err.message });
+    }
+
+    const updateOrder = "UPDATE ?? SET ?? = ?, ?? = ? WHERE ?? = ?";
+  
+    const query = mysql.format(updateOrder,["Orders","status","finished","diliveredAT",diliveredAt,"orderID",orderID])
+    
     connection.query(query, (err, data) => {
       connection.release();
       if (err) {
