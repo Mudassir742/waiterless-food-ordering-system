@@ -38,25 +38,33 @@ const Signup = () => {
         user.address &&
         user.contact
       ) {
-        const isLogin = await fetch("/customer/newcustomer", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user,
-          }),
-        });
+        if (
+          user.contact.match(/^[0-9]+$/) !== null &&
+          user.contact.length === 11
+        ) {
+          const isLogin = await fetch("/customer/newcustomer", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user,
+            }),
+          });
 
-        const data = await isLogin.json();
-        console.log(data);
-        if (data.message === "register") {
-          toast.success("Registeration Successfull");
-          navigate("/")
-          console.log("User not found");
+          const data = await isLogin.json();
+          console.log(data);
+          if (data.message === "register") {
+            toast.success("Registeration Successfull");
+            navigate("/");
+          } else {
+            toast.error("Unable to register");
+          }
         } else {
-          toast.error("Unable to register");
+          toast.error("Enter Proper Contact");
         }
+      } else {
+        toast.error("Fields are not properly filled!");
       }
     } catch (err) {
       console.log(err.message);
@@ -69,7 +77,7 @@ const Signup = () => {
         <div className="login-content">
           <div className="login-logo">
             <h1>SignUp</h1>
-            <button onClick={()=>navigate("/")}>Already a User</button>
+            <button onClick={() => navigate("/")}>Already a User</button>
           </div>
           <section className="login-input-section">
             <form className="login-form">

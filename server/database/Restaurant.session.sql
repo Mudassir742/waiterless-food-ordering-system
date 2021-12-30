@@ -68,21 +68,7 @@ create table Orders(
     primary key(orderID)
 );
 
-drop table Orders;
-
-insert into Orders(ID,cID,createAt,diliveredAT,status,totalAmount)
-values(1,1,now(),null,"pending",null);
-
-update Orders
-set totalAmount = 1900
-where oID = 1;
-
-update Orders
-set diliveredAt = now()
-where oID = 1;
-
 SELECT * from Orders;
-
 
 create table FoodItem(
     itemID varchar(50) not null,
@@ -95,7 +81,6 @@ create table FoodItem(
 insert into FoodItem(itemID,oID,itemPrice,quantity)
 values(1,1,300,1),(2,1,1600,2);
 
-drop table FoodItem;
 
 select * from FoodItem;
 
@@ -129,6 +114,8 @@ create table Category(
     catName varchar(30) not null,
     primary key(catID)
 );
+
+drop table Category;
 
 create procedure prog() 
 BEGIN 

@@ -50,20 +50,22 @@ const Login = (props) => {
         } else {
           if (data.data[0].employRole.toLowerCase() === "admin") {
             props.setRole("admin");
-            props.setUser(data.data[0])
+            props.setUser(data.data[0]);
             navigate("/admin");
           } else if (data.data[0].employRole.toLowerCase() === "customer") {
             props.setRole("customer");
-            props.setUser(data.data[0])
+            props.setUser(data.data[0]);
             navigate("/customer");
           } else if (data.data[0].employRole.toLowerCase() === "manager") {
             props.setRole("manager");
-            props.setUser(data.data[0])
+            props.setUser(data.data[0]);
             navigate("/orderhistory");
           }
           //{data.data.employRole ? (data.data.employRole.toLowerCase() === "admin" ? props.setRole("admin"): props.setRole("manager")) : props.setRole("customer")}
-          toast.error("Fields are not properly filled!");
+          toast.error("Login error!");
         }
+      } else {
+        toast.error("Fields are not properly filled!");
       }
     } catch (err) {
       console.log(err.message);

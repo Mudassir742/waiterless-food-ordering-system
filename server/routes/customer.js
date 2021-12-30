@@ -111,7 +111,7 @@ router.post("/newcustomer", (req, res) => {
               password,
               contact,
               address,
-              "customer"
+              "customer",
             ]);
 
             connection.query(query, (err, data) => {
@@ -133,96 +133,35 @@ router.post("/newcustomer", (req, res) => {
 //update Customer profile........
 router.post("/updatecustomer", (req, res) => {
   console.log(req.body);
-  const { customerID, name, userName, contact, address } = req.body;
+  const { customerID, name, password, contact, address } = req.body;
 
   pool.getConnection((err, connection) => {
     if (err) {
       return res.status(400).send({ data: err.message });
     }
 
-    let checkUsername = "Select username from ?? where ?? = ?";
-    const query = mysql.format(checkUsername, [
+    const updateCustomer =
+      "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+    const query = mysql.format(updateCustomer, [
       "Customer",
-      "username",
-      userName,
+      "name",
+      name,
+      "password",
+      password,
+      "contact",
+      contact,
+      "address",
+      address,
+      "customerID",
+      customerID,
     ]);
 
-    connection.query(query, (err, rows) => {
+    connection.query(query, (err, data) => {
+      connection.release();
       if (err) {
         return res.status(400).send({ data: err.message });
       }
-
-      if (rows.length !== 0) {
-        return res.status(400).send({ data: "user Exists" });
-      }
-
-      connection.query(query, (err, rows) => {
-        if (err) {
-          return res.status(400).send({ data: err.message });
-        }
-
-        if (rows.length !== 0) {
-          return res.status(400).send({ message: "user Exists" });
-        }
-
-        const query = mysql.format(checkUsername, [
-          "Employ",
-          "username",
-          userName,
-        ]);
-
-        connection.query(query, (err, rows) => {
-          if (err) {
-            return res.status(400).send({ data: err.message });
-          }
-
-          if (rows.length !== 0) {
-            return res.status(400).send({ message: "user Exists" });
-          }
-
-          const query = mysql.format(checkUsername, [
-            "Admin",
-            "username",
-            userName,
-          ]);
-
-          connection.query(query, (err, rows) => {
-            if (err) {
-              return res.status(400).send({ data: err.message });
-            }
-
-            if (rows.length !== 0) {
-              return res.status(400).send({ message: "user Exists" });
-            }
-
-            const updateCustomer =
-              "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
-            const query = mysql.format(updateCustomer, [
-              "Customer",
-              "name",
-              name,
-              "username",
-              userName,
-              "contact",
-              contact,
-              "address",
-              address,
-              "customerID",
-              customerID,
-            ]);
-
-            connection.query(query, (err, data) => {
-              connection.release();
-              if (err) {
-                return res.status(400).send({ data: err.message });
-              }
-              return res
-                .status(201)
-                .send({ data: customerID, message: "updated" });
-            });
-          });
-        });
-      });
+      return res.status(201).send({ data: customerID, message: "updated" });
     });
   });
 });

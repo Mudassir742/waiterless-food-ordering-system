@@ -12,7 +12,7 @@ router.post("/user/login", (req, res) => {
       res.send(err.message);
     } else {
       const getCustomerDetail =
-        "Select customerID,name,username,contact,address,employRole from ?? where ?? = ? and ?? = ?";
+        "Select customerID,name,username,password,contact,address,employRole from ?? where ?? = ? and ?? = ?";
       const query = mysql.format(getCustomerDetail, [
         "Customer",
         "username",

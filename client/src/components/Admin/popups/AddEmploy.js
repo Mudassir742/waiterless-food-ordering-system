@@ -1,5 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddEmploy = (props) => {
   const [userDetail, setUserDetail] = useState({
@@ -11,49 +13,66 @@ const AddEmploy = (props) => {
     role: "",
   });
 
+  
+
   const [file, setFile] = useState();
   const [imagePreview, setImagePreview] = useState();
 
-    const saveFile = (e) => {
-      if (!e.target.files || e.target.files.length === 0) {
-        setFile(undefined);
-        return;
-      }
-      // [0] for only using single image....
+  const saveFile = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      setFile(undefined);
+      return;
+    }
+    // [0] for only using single image....
+
+    if (isFileImage(e.target.files[0])) {
+      console.log("image");
       setFile(e.target.files[0]);
-      //console.log(file);
-    };
+    } else {
+      console.log("not image");
+      toast.error("Enter proper Image");
+    } //
+    //console.log(file);
+  };
 
-    const uploadFile = async (employID) => {
-      const formData = new FormData();
-      formData.append("employImage", file);
+  function isFileImage(file) {
+    return file && file["type"].split("/")[0] === "image";
+  }
 
-      const config = {
-        headers: {
-            'content-type': 'multipart/form-data'
-        }
-      };
-      try {
-        const res = await axios.post(`/employ/upload/employimage/${employID}`, formData,config);
-        console.log(res);
-      } catch (ex) {
-        console.log(ex);
-      }
+  const uploadFile = async (employID) => {
+    const formData = new FormData();
+    formData.append("employImage", file);
+
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
     };
+    try {
+      const res = await axios.post(
+        `/employ/upload/employimage/${employID}`,
+        formData,
+        config
+      );
+      console.log(res);
+    } catch (ex) {
+      console.log(ex);
+    }
+  };
   //console.log(file);
 
   //side Effect for image preview......
-    useEffect(() => {
-      if (!file) {
-        setImagePreview(undefined);
-        return;
-      }
+  useEffect(() => {
+    if (!file) {
+      setImagePreview(undefined);
+      return;
+    }
 
-      const objectUrl = URL.createObjectURL(file);
-      setImagePreview(objectUrl);
+    const objectUrl = URL.createObjectURL(file);
+    setImagePreview(objectUrl);
 
-      return () => URL.revokeObjectURL(objectUrl);
-    }, [file]);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [file]);
 
   useLayoutEffect(() => {
     setUserDetail({
@@ -83,27 +102,78 @@ const AddEmploy = (props) => {
       userDetail.role !== "" &&
       userDetail.password !== ""
     ) {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          props.isEdit
-            ? { ...userDetail, employID: props.employID }
-            : userDetail
-        ),
-      };
+      if (!props.isEdit) {
+        if (file) {
+          if (
+            userDetail.contact.match(/^[0-9]+$/) !== null &&
+            userDetail.contact.length === 11
+          ) {
+            if (
+              userDetail.role === "Manager" ||
+              userDetail.role === "Cashier"
+            ) {
+              const requestOptions = {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(
+                  props.isEdit
+                    ? { ...userDetail, employID: props.employID }
+                    : userDetail
+                ),
+              };
 
-      const requestURL = props.isEdit
-        ? "/employ/updateemploy"
-        : "/employ/newemploy";
+              const requestURL = props.isEdit
+                ? "/employ/updateemploy"
+                : "/employ/newemploy";
 
-      const response = await fetch(requestURL, requestOptions);
+              const response = await fetch(requestURL, requestOptions);
 
-      const data = await response.json();
+              const data = await response.json();
 
-      await uploadFile(data.data)
+              await uploadFile(data.data);
 
-      props.setShow(!props.show);
+              props.setShow(!props.show);
+            } else {
+              toast.error("Enter Valid Role");
+            }
+          } else {
+            toast.error("Enter Proper Contact");
+          }
+        } else {
+          alert("Image Should not be empty");
+        }
+      } else {
+        if (
+          userDetail.contact.match(/^[0-9]+$/) !== null &&
+          userDetail.contact.length === 11
+        ) {
+          if (userDetail.role === "Manager" || userDetail.role === "Cashier") {
+            const requestOptions = {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(
+                props.isEdit
+                  ? { ...userDetail, employID: props.employID }
+                  : userDetail
+              ),
+            };
+
+            const requestURL = props.isEdit
+              ? "/employ/updateemploy"
+              : "/employ/newemploy";
+
+            const response = await fetch(requestURL, requestOptions);
+
+            const data = await response.json();
+
+            props.setShow(!props.show);
+          } else {
+            toast.error("Enter Valid Role");
+          }
+        } else {
+          toast.error("Enter Proper Contact");
+        }
+      }
     } else {
       console.log("Input is Empty");
     }
@@ -131,15 +201,23 @@ const AddEmploy = (props) => {
           <i className="fas fa-times"></i>
         </div>
         <div className="profile-image-container">
-          <div className="image">
-            {file && <img src={imagePreview} alt="profile-pic" />}
-          </div>
-          <input type="file" name="image" onChange={saveFile} />
+          {!props.isEdit ? (
+            <>
+              {" "}
+              <div className="image">
+                {file && <img src={imagePreview} alt="profile-pic" />}
+              </div>
+              <input type="file" name="image" onChange={saveFile} />
+            </>
+          ) : (
+            <></>
+          )}
         </div>
 
         <div>
           <form className="select-sort">
             <div>
+              <h5 style={{color:"White", marginBottom:".5rem"}}>Name</h5>
               <input
                 type="text"
                 placeholder="Name"
@@ -155,25 +233,31 @@ const AddEmploy = (props) => {
                 name must be a valid value
               </span>
             </div>
+            {!props.isEdit ? (
+              <div>
+            <h5 style={{color:"White", marginBottom:".5rem"}}>Password</h5>
+
+                <input
+                  type="text"
+                  placeholder="Username"
+                  name="userName"
+                  value={userDetail.userName}
+                  onChange={handleInputChange}
+                />
+                <span
+                  className={
+                    userDetail.userName ? "showerrormessage" : "error-message"
+                  }
+                >
+                  username must be a valid value
+                </span>
+              </div>
+            ) : (
+              <></>
+            )}
 
             <div>
-              <input
-                type="text"
-                placeholder="Username"
-                name="userName"
-                value={userDetail.userName}
-                onChange={handleInputChange}
-              />
-              <span
-                className={
-                  userDetail.userName ? "showerrormessage" : "error-message"
-                }
-              >
-                username must be a valid value
-              </span>
-            </div>
-
-            <div>
+            <h5 style={{color:"White", marginBottom:".5rem"}}>Password</h5>
               <input
                 type="text"
                 placeholder="password"
@@ -191,6 +275,7 @@ const AddEmploy = (props) => {
             </div>
 
             <div>
+            <h5 style={{color:"White", marginBottom:".5rem"}}>Contact</h5>
               <input
                 type="text"
                 placeholder="Contact"
@@ -208,6 +293,7 @@ const AddEmploy = (props) => {
             </div>
 
             <div>
+            <h5 style={{color:"White", marginBottom:".5rem"}}>Role</h5>
               <input
                 type="text"
                 placeholder="Role"
@@ -225,6 +311,7 @@ const AddEmploy = (props) => {
             </div>
 
             <div>
+            <h5 style={{color:"White", marginBottom:".5rem"}}>Address</h5>
               <input
                 type="text"
                 placeholder="address"
@@ -247,6 +334,17 @@ const AddEmploy = (props) => {
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };

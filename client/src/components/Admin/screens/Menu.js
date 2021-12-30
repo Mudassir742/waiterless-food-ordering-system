@@ -13,7 +13,7 @@ const Menu = () => {
     const headers = { "Content-Type": "application/json" };
     const response = await fetch("/data/api/menuitems", { headers });
     const data = await response.json();
-
+    console.log(data.data)
     setMenuItems(data.data);
   };
 
@@ -104,6 +104,7 @@ const Menu = () => {
         price={edit ? items.itemPrice : ""}
         category={edit ? items.itemCat : ""}
         itemID={edit ? items.itemID : ""}
+        itemPhoto = {edit ? items.itemPhoto : ""}
         isEdit={edit}
       />
     </motion.div>

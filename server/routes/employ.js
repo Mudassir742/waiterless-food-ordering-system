@@ -176,7 +176,7 @@ router.post("/deleteemploy/:id", (req, res) => {
 //update an employ........
 router.post("/updateemploy", (req, res) => {
   console.log(req.body);
-  const { employID, name, userName, password, contact, address, role } =
+  const { employID, name, password, contact, address, role } =
     req.body;
 
   pool.getConnection((err, connection) => {
@@ -184,69 +184,12 @@ router.post("/updateemploy", (req, res) => {
       return res.status(400).send({ data: err.message });
     }
 
-    let checkUsername = "Select username from ?? where ?? = ?";
-    const query = mysql.format(checkUsername, [
-      "Customer",
-      "username",
-      userName,
-    ]);
-
-    connection.query(query, (err, rows) => {
-      if (err) {
-        return res.status(400).send({ data: err.message });
-      }
-
-      if (rows.length !== 0) {
-        return res.status(400).send({ data: "user Exists" });
-      }
-
-      connection.query(query, (err, rows) => {
-        if (err) {
-          return res.status(400).send({ data: err.message });
-        }
-
-        if (rows.length !== 0) {
-          return res.status(400).send({ data: "user Exists" });
-        }
-
-        const query = mysql.format(checkUsername, [
-          "Employ",
-          "username",
-          userName,
-        ]);
-
-        connection.query(query, (err, rows) => {
-          if (err) {
-            return res.status(400).send({ data: err.message });
-          }
-
-          if (rows.length !== 0) {
-            return res.status(400).send({ data: "user Exists" });
-          }
-
-          const query = mysql.format(checkUsername, [
-            "Admin",
-            "username",
-            userName,
-          ]);
-
-          connection.query(query, (err, rows) => {
-            if (err) {
-              return res.status(400).send({ data: err.message });
-            }
-
-            if (rows.length !== 0) {
-              return res.status(400).send({ data: "user Exists" });
-            }
-
-            const updateMenuItem =
-              "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?,?? = ?, ?? = ?, ?? = ? WHERE ?? = ?";
+    const updateMenuItem =
+              "UPDATE ?? SET ?? = ?, ?? = ?, ?? = ?,?? = ?, ?? = ? WHERE ?? = ?";
             const query = mysql.format(updateMenuItem, [
               "Employ",
               "name",
               name,
-              "username",
-              userName,
               "employRole",
               role,
               "password",
@@ -269,10 +212,7 @@ router.post("/updateemploy", (req, res) => {
                 .send({ data: employID, message: "updated" });
             });
           });
-        });
-      });
-    });
-  });
+    
 });
 
 //image upload..................

@@ -164,7 +164,7 @@ router.post("/removeitem/:id", (req, res) => {
 //edit the Item in Menu.....
 router.post("/edititem", (req, res) => {
   console.log(req.body);
-  const itemID = parseInt(req.body.itemID);
+  const itemID = req.body.itemID
   const itemCategoryID = parseInt(req.body.category);
   const itemName = req.body.name;
   const itemPrice = parseInt(req.body.price);

@@ -1,5 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import axios from "axios"
+import axios from "axios";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddMenuItems = (props) => {
   const [inputItemCategories, setInputItemCategory] = useState([]);
@@ -10,6 +12,8 @@ const AddMenuItems = (props) => {
     price: "",
   });
 
+  console.log(props);
+
   const [file, setFile] = useState();
   const [imagePreview, setImagePreview] = useState();
 
@@ -18,10 +22,18 @@ const AddMenuItems = (props) => {
       setFile(undefined);
       return;
     }
-    // [0] for only using single image....
-    setFile(e.target.files[0]);
-    //console.log(file);
+    if (isFileImage(e.target.files[0])) {
+      console.log("image");
+      setFile(e.target.files[0]);
+    } else {
+      console.log("not image");
+      toast.error("Enter proper Image");
+    } //
   };
+
+  function isFileImage(file) {
+    return file && file["type"].split("/")[0] === "image";
+  }
 
   const uploadFile = async (itemID) => {
     const formData = new FormData();
@@ -29,11 +41,15 @@ const AddMenuItems = (props) => {
 
     const config = {
       headers: {
-          'content-type': 'multipart/form-data'
-      }
+        "content-type": "multipart/form-data",
+      },
     };
     try {
-      const res = await axios.post(`/data/upload/itemimage/${itemID}`, formData,config);
+      const res = await axios.post(
+        `/data/upload/itemimage/${itemID}`,
+        formData,
+        config
+      );
       console.log(res);
     } catch (ex) {
       console.log(ex);
@@ -56,7 +72,7 @@ const AddMenuItems = (props) => {
 
   useLayoutEffect(() => {
     setNewMenuItem({
-      category: props.category,
+      category: props.category.toString(),
       name: props.name,
       price: props.price,
     });
@@ -75,25 +91,53 @@ const AddMenuItems = (props) => {
     if (
       newMenuItem.category !== "" &&
       newMenuItem.name !== "" &&
-      newMenuItem.price !== "" && file.name !== ""
+      newMenuItem.price !== ""
     ) {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          props.isEdit ? { ...newMenuItem, itemID: props.itemID } : newMenuItem
-        ),
-      };
+      if (!props.isEdit) {
+        if (file) {
+          const requestOptions = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(
+              props.isEdit
+                ? { ...newMenuItem, itemID: props.itemID }
+                : newMenuItem
+            ),
+          };
 
-      const requestURL = props.isEdit ? "/data/edititem" : "/data/addmenuitems";
+          const requestURL = props.isEdit
+            ? "/data/edititem"
+            : "/data/addmenuitems";
 
-      const response = await fetch(requestURL, requestOptions);
+          const response = await fetch(requestURL, requestOptions);
 
-      const data = await response.json();
+          const data = await response.json();
 
-      
-      await uploadFile(data.itemID)
-      
+          await uploadFile(data.itemID);
+
+          setFile(undefined);
+        } else {
+          alert("image should not be empty");
+        }
+      } else {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(
+            props.isEdit
+              ? { ...newMenuItem, itemID: props.itemID }
+              : newMenuItem
+          ),
+        };
+
+        const requestURL = props.isEdit
+          ? "/data/edititem"
+          : "/data/addmenuitems";
+
+        const response = await fetch(requestURL, requestOptions);
+
+        const data = await response.json();
+      }
 
       props.setShow(!props.show);
     } else {
@@ -129,10 +173,19 @@ const AddMenuItems = (props) => {
           <i className="fas fa-times"></i>
         </div>
         <div className="profile-image-container">
-          <div className="image">
-            {file && <img src={imagePreview} alt="profile-pic" />}
-          </div>
-          <input type="file" name="image" onChange={saveFile} />
+          {props.isEdit ? (
+            <div className="image">
+              {<img src={props.itemPhoto} alt="profile-pic" />}
+            </div>
+          ) : (
+            <>
+              <div className="image">
+                {file && <img src={imagePreview} alt="profile-pic" />}
+              </div>
+              <input type="file" name="image" onChange={saveFile} />
+            </>
+          )}
+
           {/* <button onClick={uploadFile}>Submit</button> */}
         </div>
 
@@ -143,6 +196,7 @@ const AddMenuItems = (props) => {
               name="category"
               onChange={handleInputChange}
             >
+              <option value="">None</option> : <></>
               {/*categories already in database*/}
               {inputItemCategories &&
                 inputItemCategories.map((categories) => {
@@ -198,6 +252,17 @@ const AddMenuItems = (props) => {
           </form>
         </div>
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   );
 };
